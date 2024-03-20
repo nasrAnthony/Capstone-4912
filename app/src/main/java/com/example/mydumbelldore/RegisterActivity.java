@@ -20,6 +20,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class RegisterActivity extends AppCompatActivity {
 
         TextInputEditText editTextPassword, editTextEmail;
@@ -27,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
         Button buttonReg;
         FirebaseAuth mAuth;
         TextView textView;
+        Timer timer;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,16 @@ public class RegisterActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
 
+
+//        timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                Intent intent = new Intent(RegisterActivity.this, StartPage.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        }, 4000);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
