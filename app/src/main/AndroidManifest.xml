@@ -15,6 +15,7 @@
         android:theme="@style/Theme.Material3.Light"
         tools:targetApi="31">
 
+        <!-- Existing activities -->
         <activity
             android:name=".StartPage"
             android:exported="true">
@@ -23,22 +24,36 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
             android:theme="@style/Theme.Material3.Light.NoActionBar" />
-
         <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.Material3.Light.NoActionBar" />
-
-
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
+        <!-- Added activities based on the provided Java files -->
+        <activity
+            android:name=".ChatGPT"
+            android:exported="false" />
+        <activity
+            android:name=".ExerciseList"
+            android:exported="false" />
+
+        <!-- Note: HomeActivity is a fragment, so it does not need an entry here. -->
+
+        <!-- You have mentioned a Navigation activity, which was not among the files provided. -->
+        <!-- If you have such an activity, uncomment and use the following: -->
+        <!-- <activity -->
+        <!--     android:name=".Navigation" -->
+        <!--     android:exported="false" -->
+        <!--     android:label="@string/title_activity_navigation" -->
+        <!--     android:theme="@style/NoActionBar" /> -->
 
     </application>
 
