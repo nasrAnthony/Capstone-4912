@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -44,6 +45,9 @@
         <activity
             android:name=".ExerciseList"
             android:exported="false" />
+        <activity
+            android:name=".ProfileActivity" />
+
 
         <!-- Note: HomeActivity is a fragment, so it does not need an entry here. -->
 
