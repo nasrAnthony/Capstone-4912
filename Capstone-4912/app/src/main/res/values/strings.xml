@@ -8,13 +8,6 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string-array name="activity_level_options">
-        <item>Sedentary (little or no exercise)</item>
-        <item>Lightly active (light exercise/sports 1–3 days/week)</item>
-        <item>Moderately active (moderate exercise/sports 3–5 days/week)</item>
-        <item>Very active (hard exercise/sports 6–7 days a week)</item>
-        <item>Super active (very hard exercise/physical job and exercise 2x/day)</item>
-    </string-array>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
