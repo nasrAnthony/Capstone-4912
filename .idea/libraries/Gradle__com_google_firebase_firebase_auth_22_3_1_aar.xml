@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.firebase:firebase-auth:22.3.1@aar" external-system-id="GRADLE">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-4/f31a108ff4cc559dac8a29f91c50f789/transformed/firebase-auth-22.3.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-4/f31a108ff4cc559dac8a29f91c50f789/transformed/firebase-auth-22.3.1/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-auth/22.3.1/9701c8ba9860d4772c35403e31ba64dc620feeaf/firebase-auth-22.3.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "133641570885",
+    "project_id": "dumbbelldore-database",
+    "storage_bucket": "dumbbelldore-database.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:133641570885:android:94447b485076f161e8f12c",
+        "android_client_info": {
+          "package_name": "com.example.mydumbelldore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNd0IzUej48oZcGAoE6yGeI03ZGIlFxmU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
