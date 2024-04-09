@@ -27,7 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 public class RegisterActivity extends AppCompatActivity {
 
         TextInputEditText editTextPassword, editTextEmail,
-                editPassword2, editFullName,editHeight,editWeight, editAge;
+                editPassword2, editFullName,editHeight,editWeight, editAge, editGender;
 
         ProgressBar progressBar;
         Button buttonReg;
@@ -45,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         editHeight = findViewById(R.id.userHeight);
         editWeight = findViewById(R.id.userWeight);
         editAge = findViewById(R.id.userAge);
+        editGender = findViewById(R.id.userGender);
         editPassword2 = findViewById(R.id.password2);
         mAuth = FirebaseAuth.getInstance();
         progressBar = findViewById(R.id.progressBar);
@@ -52,17 +53,28 @@ public class RegisterActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         //creating the exercises.
-        //Exercise exercise1 = new Exercise("Shoulder press", "Moderate", "Beginner");
-        //Exercise exercise2 = new Exercise("Lateral Raise", "Moderate", "Experienced");
-        //Exercise exercise3 = new Exercise("Bench press", "Moderate", "Beginner");
-        //Exercise exercise4 = new Exercise("Goblet Squat", "High", "Beginner");
-        //Exercise exercise5 = new Exercise("Bicep Curls", "Moderate", "Beginner");
-        // Adding the Exercise to the Database
+        //Exercise exercise1 = new Exercise("Shoulder press", "Moderate",
+        //        "Beginner", "The shoulder press is a strength exercise where you extend your arms upward lifting dumbbells above your head, " +
+        //        "then lower them back to shoulder height.",
+        //        R.drawable.shoulder_press);
+        //Exercise exercise2 = new Exercise("Lateral Raise", "Moderate",
+        //        "Experienced", "The lateral raise is a targeted exercise for shoulder strengthening, " +
+        //        "performed by lifting dumbbells outward from the body to shoulder height, then lowering with control.",
+        //        R.drawable.lateral_raise);
+        ////Exercise exercise2 = new Exercise("Lateral Raise", "Moderate", "Experienced");
+        ////Exercise exercise3 = new Exercise("Bench press", "Moderate", "Beginner");
+        //Exercise exercise3 = new Exercise("Goblet Squat", "High", "Beginner","The goblet squat is a lower-body exercise where one holds a weight close to the chest with both hands, " +
+        //        "performs a deep squat, then returns to standing, " +
+        //        "focusing on form and depth to strengthen the glutes, quads, and core." ,R.drawable.goblet_squat);
+        //Exercise exercise4 = new Exercise("Chest Press", "Moderate", "Beginner", "The dumbbell chest press involves lying on a bench and pressing dumbbells up from chest level to full extension," +
+        //        " targeting the chest, shoulders, and triceps, " +
+        //        "enhancing upper body strength and muscular endurance.", R.drawable.chest_press);
+        //// Adding the Exercise to the Database
         //addExerciseToDatabase(exercise1);
         //addExerciseToDatabase(exercise2);
         //addExerciseToDatabase(exercise3);
         //addExerciseToDatabase(exercise4);
-        //addExerciseToDatabase(exercise5);
+        ////addExerciseToDatabase(exercise5);
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,10 +89,11 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
                 String password,password2, email, fullName;
-                String height, weight, age;
+                String height, weight, age, gender;
 
                 password = String.valueOf(editTextPassword.getText());
                 email = String.valueOf(editTextEmail.getText());
+                gender = String.valueOf(editGender.getText());
                 fullName = String.valueOf(editFullName.getText());
                 weight = String.valueOf(editWeight.getText());
                 height = String.valueOf(editHeight.getText());
@@ -138,13 +151,19 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
+                if(TextUtils.isEmpty(gender)){
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(RegisterActivity.this, "Please enter your gender!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     progressBar.setVisibility(View.GONE);
-                                    User user  = new User(fullName,email,weight,height, "Not set", age);
+                                    User user  = new User(fullName,email,weight,height, "Not set", age, gender);
                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser()
                                             .getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
@@ -158,7 +177,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                                 if (task.isSuccessful()) {
                                                                     progressBar.setVisibility(View.GONE);
                                                                     Toast.makeText(getApplicationContext(), "Welcome", Toast.LENGTH_SHORT).show();
-                                                                    Intent intent = new Intent(getApplicationContext(), PersonalInfoActivity.class);
+                                                                    Intent intent = new Intent(getApplicationContext(), MainPage.class);
                                                                     startActivity(intent);
                                                                     finish();
                                                                 } else {

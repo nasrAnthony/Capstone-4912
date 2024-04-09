@@ -1,90 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="start">
+        android:padding="16dp">
 
-        <!-- Profile Header -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Profile"
-            android:textSize="34sp"
-            android:textColor="#000000"
-            android:textStyle="bold"
-            android:paddingBottom="24dp"/>
+        <!-- ImageView for Profile Picture -->
+        <ImageView
+            android:id="@+id/imageViewProfilePicture"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/profile_picture_place_holder"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"/>
 
-        <!-- Name Display -->
-        <TextView
-            android:paddingTop="20dp"
-            android:id="@+id/textViewFullName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name: "
-            android:textSize="18sp"
-            android:paddingBottom="8dp"/>
-
-        <!-- Age Display -->
-        <TextView
-            android:id="@+id/textViewAge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Age: "
-            android:textSize="18sp"
-            android:paddingBottom="8dp"/>
-
-        <!-- Height Display -->
-        <TextView
-            android:id="@+id/textViewHeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Height (cm): "
-            android:textSize="18sp"
-            android:paddingBottom="8dp"/>
-
-        <!-- Weight Display -->
-        <TextView
-            android:id="@+id/textViewWeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Weight (kg): "
-            android:textSize="18sp"
-            android:paddingBottom="16dp"/>
-
-        <!-- Activity Level Selector -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Activity Level: "
-            android:textSize="18sp"
-            android:paddingBottom="4dp"/>
-        <Spinner
-            android:id="@+id/spinnerActivityLevel"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="16dp"/>
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="start">
 
-        <!-- Submit Button -->
-        <Button
-            android:id="@+id/buttonSubmit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            android:paddingBottom="8dp"/>
+            <!-- Profile Header -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:textSize="34sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:paddingBottom="24dp"/>
 
-        <!-- Search Exercises Button -->
-        <Button
-            android:id="@+id/buttonToMain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Search Exercises"/>
+            <!-- Name Display -->
+            <TextView
+                android:paddingTop="20dp"
+                android:id="@+id/textViewFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name: "
+                android:textSize="18sp"
+                android:paddingBottom="8dp"/>
 
-    </LinearLayout>
+            <!-- Age Display -->
+            <TextView
+                android:id="@+id/textViewAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Age: "
+                android:textSize="18sp"
+                android:paddingBottom="8dp"/>
+
+            <!-- Gender Display -->
+            <TextView
+                android:id="@+id/textViewGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gender: "
+                android:textSize="18sp"
+                android:paddingBottom="8dp"/>
+
+            <!-- Height Display -->
+            <TextView
+                android:id="@+id/textViewHeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Height (cm): "
+                android:textSize="18sp"
+                android:paddingBottom="8dp"/>
+
+            <!-- Weight Display -->
+            <TextView
+                android:id="@+id/textViewWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weight (kg): "
+                android:textSize="18sp"
+                android:paddingBottom="16dp"/>
+
+            <!-- Activity Level Selector -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Activity Level: "
+                android:textSize="18sp"
+                android:paddingBottom="4dp"/>
+            <Spinner
+                android:id="@+id/spinnerActivityLevel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"/>
+
+            <!-- Submit Button -->
+            <Button
+                android:id="@+id/buttonSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:paddingBottom="8dp"/>
+
+            <!-- Search Exercises Button -->
+            <Button
+                android:id="@+id/buttonToMain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Search Exercises"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
 </ScrollView>

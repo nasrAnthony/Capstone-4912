@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import androidx.activity.EdgeToEdge;
@@ -32,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private ArrayAdapter<String> adapter;
-    private List<String> exercisesList;
+    private List<String> exerciseNames;
+    private List<Exercise> exercisesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +56,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize exercises list
         exercisesList = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, exercisesList);
+        exerciseNames = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, exerciseNames);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
             // Replace "YourExerciseObject.class" with your actual Exercise class
-            Exercise selectedExercise = (Exercise) parent.getItemAtPosition(position);
+            Exercise selectedExercise = exercisesList.get(position);
             showExerciseDialog(selectedExercise);
         });
 
@@ -71,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Exercise exercise = snapshot.getValue(Exercise.class);
                     if (exercise != null) {
-                        exercisesList.add(exercise.name);
+                        exercisesList.add(exercise);
+                        exerciseNames.add(exercise.name);
+                        //adapter.add(exercise.name);
                     }
                 }
                 adapter.notifyDataSetChanged();
@@ -112,14 +117,19 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView);
 
-        TextView exerciseNameTextView = dialogView.findViewById(R.id.exerciseNameTextView);
-        TextView exerciseInfoTextView = dialogView.findViewById(R.id.exerciseInfoTextView);
+        TextView exerciseNameTextView = dialogView.findViewById(R.id.exerciseName);
+        TextView exerciseIntensityLevel = dialogView.findViewById(R.id.exerciseIntensity);
+        TextView exerciseExperienceLevel = dialogView.findViewById(R.id.exerciseExperienceLevel);
+        TextView exerciseDescTextView = dialogView.findViewById(R.id.exerciseDescription);
+        ImageView exerciseImage = dialogView.findViewById(R.id.exerciseImage);
         Button launchExerciseButton = dialogView.findViewById(R.id.launchExerciseButton);
 
         // Set exercise data in TextViews
+        exerciseImage.setImageResource(exercise.imgID);
         exerciseNameTextView.setText(exercise.name);
-        // Set a string representing the info of your Exercise class
-        exerciseInfoTextView.setText("Intensity Level: " + exercise.intensityLevel + "\nExperience Level: " + exercise.experienceLevel);
+        exerciseIntensityLevel.setText("Intensity Level: " + exercise.intensityLevel);
+        exerciseExperienceLevel.setText("Experience Level: " + exercise.experienceLevel);
+        exerciseDescTextView.setText(exercise.description);
 
         AlertDialog dialog = builder.create();
 

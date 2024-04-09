@@ -25,11 +25,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot.*;
 
+import org.w3c.dom.Text;
+
 public class PersonalInfoActivity extends AppCompatActivity {
 
     private EditText editTextName, editTextAge, editTextHeight, editTextWeight;
     private Spinner spinnerActivityLevel;
-    TextView fullName, height, weight, age;
+    TextView fullName, height, weight, age, gender;
     FirebaseAuth fAuth;
     FirebaseDatabase database;
     String userId;
@@ -54,6 +56,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         height = findViewById(R.id.textViewHeight);
         weight = findViewById(R.id.textViewWeight);
         age = findViewById(R.id.textViewAge);
+        gender = findViewById(R.id.textViewGender);
         //editTextName = findViewById(R.id.editTextName);
         //editTextAge = findViewById(R.id.editTextAge);
         //editTextHeight = findViewById(R.id.editTextHeight);
@@ -72,10 +75,12 @@ public class PersonalInfoActivity extends AppCompatActivity {
                         String weight = String.valueOf(dataSnapshot.child("weight").getValue());
                         String height = String.valueOf(dataSnapshot.child("height").getValue());
                         String age = String.valueOf(dataSnapshot.child("age").getValue());
-                        ((TextView) findViewById(R.id.textViewFullName)).setText(fullName);
-                        ((TextView) findViewById(R.id.textViewHeight)).setText(height);
-                        ((TextView) findViewById(R.id.textViewWeight)).setText(weight);
-                        ((TextView) findViewById(R.id.textViewAge)).setText(age);
+                        String gender = String.valueOf(dataSnapshot.child("gender").getValue());
+                        ((TextView) findViewById(R.id.textViewFullName)).setText("Name: "+fullName);
+                        ((TextView) findViewById(R.id.textViewHeight)).setText("Height (cm): "+height);
+                        ((TextView) findViewById(R.id.textViewWeight)).setText("Weight (kg): " + weight);
+                        ((TextView) findViewById(R.id.textViewAge)).setText("Age: "+age);
+                        ((TextView) findViewById(R.id.textViewGender)).setText("Gender: "+gender);
                     }
                 }
             }
