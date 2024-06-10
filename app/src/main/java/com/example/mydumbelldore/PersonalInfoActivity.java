@@ -99,6 +99,17 @@ public class PersonalInfoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button buttonGoToCreateWorkout = findViewById(R.id.buttonToCreateWorkout); // send user to create workout activity..
+        buttonGoToCreateWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CreateWorkoutActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         Button buttonSubmit = findViewById(R.id.buttonSubmit); // do we need to give ability for user to change all of the attirbutes?
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +117,8 @@ public class PersonalInfoActivity extends AppCompatActivity {
                 //submitPersonalInfo();
             }
         });
+
+
     }
 
     private void submitPersonalInfo() {

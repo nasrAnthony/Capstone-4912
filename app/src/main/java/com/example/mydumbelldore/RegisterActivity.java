@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStructure;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,17 +24,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 
 public class RegisterActivity extends AppCompatActivity {
 
-        TextInputEditText editTextPassword, editTextEmail,
-                editPassword2, editFullName,editHeight,editWeight, editAge, editGender;
+    TextInputEditText editTextPassword, editTextEmail,
+            editPassword2, editFullName,editHeight,editWeight, editAge, editGender;
 
-        ProgressBar progressBar;
-        Button buttonReg;
-        FirebaseAuth mAuth;
-        TextView textView;
-        DatabaseReference mDatabase;
+    ProgressBar progressBar;
+    Button buttonReg;
+    FirebaseAuth mAuth;
+    TextView textView;
+    DatabaseReference mDatabase;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,16 +105,16 @@ public class RegisterActivity extends AppCompatActivity {
                 password2 = String.valueOf(editPassword2.getText());
                 age = String.valueOf(editAge.getText());
 
-            editAge.setOnKeyListener(new View.OnKeyListener() {
-                @Override
-                public boolean onKey(View v, int keyCode, KeyEvent event) {
-                    if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                        buttonReg.performClick();
-                        return true;
+                editAge.setOnKeyListener(new View.OnKeyListener() {
+                    @Override
+                    public boolean onKey(View v, int keyCode, KeyEvent event) {
+                        if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                            buttonReg.performClick();
+                            return true;
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
+                });
 
                 //handle empty inputs in either text input boxes( email & password)
                 //extra validation.
@@ -163,10 +168,18 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     progressBar.setVisibility(View.GONE);
-                                    User user  = new User(fullName,email,weight,height, "Not set", age, gender);
-                                    FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser()
+
+                                    List<Workout> userWorkouts = new ArrayList<Workout>();
+                                    List<Exercise> placeHolderListExerciseIds = new ArrayList<Exercise>();
+                                    //List<String> placeHolderListExerciseIds = new ArrayList<String>();
+                                    Workout newPlaceHodlerWorkout = new Workout("No Workouts yet", 0, 0, placeHolderListExerciseIds);
+                                    userWorkouts.add(newPlaceHodlerWorkout);
+
+                                    User user  = new User(fullName,email,weight,height, "Not set", age, gender, userWorkouts);
+                                    //User user  = new User(fullName,email,weight,height, "Not set", age, gender);
+                                    FirebaseDatabase.getInstance().getReference("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser())
                                             .getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
+                                        @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()){
                                                 mAuth.signInWithEmailAndPassword(email, password)

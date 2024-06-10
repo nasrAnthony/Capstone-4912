@@ -112,6 +112,14 @@
                 android:layout_height="wrap_content"
                 android:text="Search Exercises"/>
 
+
+            <!-- Create Workout Button -->
+            <Button
+                android:id="@+id/buttonToCreateWorkout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Workout"/>
+
         </LinearLayout>
     </RelativeLayout>
 

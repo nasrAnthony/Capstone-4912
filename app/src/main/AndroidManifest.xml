@@ -15,6 +15,10 @@
         android:theme="@style/Theme.Material3.Light"
         tools:targetApi="31">
         <activity
+            android:name=".CreateWorkoutActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Material3.Light" />
+        <activity
             android:name=".ExerciseInfoPage"
             android:exported="false" />
         <activity
@@ -31,7 +35,7 @@
             android:name=".LoginActivity"
             android:exported="true"
             android:label="@string/title_activity_login"
-            android:theme="@style/Theme.Material3.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.Material3.Light.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="false"
