@@ -32,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         workoutName = findViewById(R.id.workoutName);
         timeBetweenExercises = findViewById(R.id.delayBetweenExercises);
         possibleExercicesListView = findViewById(R.id.listViewCreateWorkout);
-        reference = FirebaseDatabase.getInstance().getReference("users"); //general ref to users path.
+        reference = FirebaseDatabase.getInstance().getReference("Users"); //general ref to users path.
         userId = fAuth.getCurrentUser().getUid();
         exerciseDatabaseReference = FirebaseDatabase.getInstance().getReference().child("exercises");
 
@@ -116,58 +117,88 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //validation..
-                delayBetweenExercisesSelected = Integer.valueOf(timeBetweenExercises.getText().toString());
-                workoutTitle = workoutName.getText().toString();
-                if (delayBetweenExercisesSelected < 1) {
-                    Toast.makeText(CreateWorkoutActivity.this, "Select a longer break time!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                addUserWorkout();
+            }
+        });
+    }
 
-                if (TextUtils.isEmpty(workoutTitle)) {
-                    Toast.makeText(CreateWorkoutActivity.this, "Please enter a name for your workout!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+    public void addUserWorkout(){
+        //validation..
+        String numberGivenString = timeBetweenExercises.getText().toString();
+        /*delayBetweenExercisesSelected = Integer.parseInt(timeBetweenExercises.getText().toString());*/
+        workoutTitle = workoutName.getText().toString();
+        if(!TextUtils.isEmpty(numberGivenString)) {
+            delayBetweenExercisesSelected = Integer.parseInt(timeBetweenExercises.getText().toString());
+            if (delayBetweenExercisesSelected < 1) {
+                Toast.makeText(CreateWorkoutActivity.this, "Select a longer break time!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
 
-                //if validation passes.. we create workout object and add to user variables...
-                Workout newWorkout = new Workout(workoutTitle,selectedExercises.size(), delayBetweenExercisesSelected, selectedExercises);
-                //Workout newWorkout = new Workout(workoutTitle,selectedExercises.size(), delayBetweenExercisesSelected, meow);
-                DatabaseReference workoutRef = reference.child(userId).child("userWorkouts"); // workoutId is the unique ID of the workout
-                referenceToUser = FirebaseDatabase.getInstance().getReference("Users");
-                referenceToUser.child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().exists()) {
-                                DataSnapshot dataSnapshot = task.getResult();
-                                currentUserWorkoutList = (List<Workout>) dataSnapshot.child("userWorkouts").getValue();
-                                Toast.makeText(CreateWorkoutActivity.this, "Data has been fetched!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+        if(TextUtils.isEmpty(numberGivenString)) {
+            Toast.makeText(CreateWorkoutActivity.this, "Please input a delay value!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(workoutTitle)) {
+            Toast.makeText(CreateWorkoutActivity.this, "Please enter a name for your workout!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //if validation passes.. we create workout object and add to user variables...
+        Workout newWorkout = new Workout(workoutTitle,selectedExercises.size(), delayBetweenExercisesSelected, selectedExercises);
+        //Workout newWorkout = new Workout(workoutTitle,selectedExercises.size(), delayBetweenExercisesSelected, meow);
+        DatabaseReference workoutRef = reference.child(userId).child("userWorkouts"); // workoutId is the unique ID of the workout
+        referenceToUser = FirebaseDatabase.getInstance().getReference("Users");
+        referenceToUser.child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult().exists()) {
+                        DataSnapshot dataSnapshot = task.getResult();
+                        GenericTypeIndicator<List<Workout>> t = new GenericTypeIndicator<List<Workout>>() {};
+                        currentUserWorkoutList = dataSnapshot.child("userWorkouts").getValue(t);
+                        //Toast.makeText(CreateWorkoutActivity.this, "Data has been fetched!", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+            }
+        });
+
+        if(selectedExercises.isEmpty()){
+            Toast.makeText(CreateWorkoutActivity.this, "You cannot create an empty workout! Add some Exercises first.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else {
+            try {
+                // Add workout to the list and update Firebase
+                if (currentUserWorkoutList == null) {
+                    currentUserWorkoutList = new ArrayList<Workout>();
+                }
 
                 currentUserWorkoutList.add(newWorkout);
-                //Set the new value for the workout
+
+                // Set the new value for the workout
                 workoutRef.setValue(currentUserWorkoutList).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(CreateWorkoutActivity.this, "Workout has been Created!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreateWorkoutActivity.this, "Workout has been created!", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(CreateWorkoutActivity.this, "Failed to create workout!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+            } catch (Exception e) {
+                Log.e(TAG, "Error adding workout: ", e);
+                Toast.makeText(CreateWorkoutActivity.this, "Error adding workout!", Toast.LENGTH_SHORT).show();
             }
-        });
 
-
-
+        }
     }
+
     private void showExerciseDialog(Exercise exercise) {
         // Inflate the dialog with custom view
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_exercise_info_v2, null);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_exercise_info, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView);
 
@@ -176,8 +207,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         TextView exerciseExperienceLevel = dialogView.findViewById(R.id.exerciseExperienceLevel);
         TextView exerciseDescTextView = dialogView.findViewById(R.id.exerciseDescription);
         ImageView exerciseImage = dialogView.findViewById(R.id.exerciseImage);
-        Button buttonAddToWorkout = dialogView.findViewById(R.id.addToWorkoutbutton);
-
+        Button buttonAddToWorkout = dialogView.findViewById(R.id.addToWorkoutButton);
         // Set exercise data in TextViews
         exerciseImage.setImageResource(exercise.imgID);
         exerciseNameTextView.setText(exercise.name);
@@ -186,15 +216,19 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         exerciseDescTextView.setText(exercise.description);
 
         AlertDialog dialog = builder.create();
+        dialog.show();
 
-        buttonAddToWorkout.setOnClickListener(v -> {
-            // Handle "launch exercise" button click
-            // Intent to start an activity or whatever you need to do to launch the exercise
-            selectedExercises.add(exercise);
-            Toast.makeText(CreateWorkoutActivity.this, "Exercise added to workout: length "+String.valueOf(currentUserWorkoutList.size()), Toast.LENGTH_SHORT).show();
-            dialog.dismiss(); // Close the dialog
+        buttonAddToWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle "launch exercise" button click
+                // Intent to start an activity or whatever you need to do to launch the exercise
+                selectedExercises.add(exercise);
+                Toast.makeText(CreateWorkoutActivity.this, "Exercise added to workout", Toast.LENGTH_SHORT).show();
+                dialog.dismiss(); // Close the dialog
+            }
         });
 
-        dialog.show();
+        /*dialog.show();*/
     }
 }
